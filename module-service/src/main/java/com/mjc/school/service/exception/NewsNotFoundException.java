@@ -1,10 +1,9 @@
 package com.mjc.school.service.exception;
 
-public class NewsNotFoundException extends CustomException {
+public class NewsNotFoundException extends RuntimeException {
 
-    public static final String CODE = "000001";
+    public NewsNotFoundException(Long id) {
 
-    public NewsNotFoundException(String message) {
-        super(CODE, message);
+        super(" News with id " + id + " does not exist.");
     }
 }

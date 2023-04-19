@@ -2,7 +2,6 @@ package com.mjc.school.repository.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,19 +28,11 @@ public class NewsModel implements BaseEntity<Long> {
     @JoinColumn(name = "authorId")
     private AuthorModel author;
 
-    @ManyToMany//(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "news_tags",
             joinColumns = @JoinColumn(name = "tagId"),
             inverseJoinColumns = @JoinColumn(name = "newsId"))
     private List<TagModel> newsTags;
-
-    public List<TagModel> getNewsTags() {
-        return newsTags;
-    }
-
-    public void setNewsTags(List<TagModel> newsTags) {
-        this.newsTags = newsTags;
-    }
 
     public NewsModel() {
     }
@@ -66,14 +57,13 @@ public class NewsModel implements BaseEntity<Long> {
         this.newsTags = newsTags;
     }
 
-//    public List<Long> getTagIds() {
-//        List<Long> tagIds = new ArrayList<>();
-//        for (TagModel tag: this.newsTags){
-//            long id = tag.getId();
-//            tagIds.add(id);
-//        }
-//        return tagIds;
-//    }
+    public List<TagModel> getNewsTags() {
+        return newsTags;
+    }
+
+    public void setNewsTags(List<TagModel> newsTags) {
+        this.newsTags = newsTags;
+    }
 
     public Long getId() {
         return id;

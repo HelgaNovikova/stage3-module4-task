@@ -1,6 +1,7 @@
 package com.mjc.school.controller.command;
 
 import com.mjc.school.service.dto.AuthorCreateDto;
+import com.mjc.school.service.dto.CommentCreateDto;
 import com.mjc.school.service.dto.NewsCreateDto;
 import com.mjc.school.service.dto.TagCreateDto;
 import org.mapstruct.Mapper;
@@ -21,6 +22,8 @@ public interface DtoMapper {
     AuthorCreateDto toAuthors(Map<String, String> body);
 
     TagCreateDto toTags(Map<String, String> body);
+
+    CommentCreateDto toComment(Map<String, String> body);
 
     default List<Long> map(String value) {
         if (value.length() > 0) {

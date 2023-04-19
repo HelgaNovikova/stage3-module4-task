@@ -1,10 +1,9 @@
 package com.mjc.school.service.exception;
 
-public class TitleLengthException extends CustomException {
+public class TitleLengthException extends RuntimeException {
 
-    public static final String CODE = "000012";
+    public TitleLengthException(int minLength, int maxLength, String title) {
 
-    public TitleLengthException(String message) {
-        super(CODE, message);
+        super(String.format("News title can not be less than %d and more than %d symbols. News title is %s", minLength, maxLength, title));
     }
 }

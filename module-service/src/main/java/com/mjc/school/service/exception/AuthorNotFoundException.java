@@ -1,11 +1,8 @@
 package com.mjc.school.service.exception;
 
-public class AuthorNotFoundException extends CustomException {
+public class AuthorNotFoundException extends RuntimeException {
 
-    public static final String CODE = "000002";
-
-    public AuthorNotFoundException(String message) {
-        super(CODE, message);
+    public AuthorNotFoundException(Long id) {
+        super("Author with id " + id + " does not exist.");
     }
-
 }

@@ -1,10 +1,9 @@
 package com.mjc.school.service.exception;
 
-public class ContentLengthException extends CustomException {
+public class ContentLengthException extends RuntimeException {
 
-    public static final String CODE = "000012";
+    public ContentLengthException(int minLength, int maxLength, String content) {
 
-    public ContentLengthException(String message) {
-        super(CODE, message);
+        super(String.format("News content can not be less than %d and more than %d symbols. News content is %s", minLength, maxLength, content));
     }
 }

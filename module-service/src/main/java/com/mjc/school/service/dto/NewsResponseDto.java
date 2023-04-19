@@ -11,6 +11,15 @@ public class NewsResponseDto {
     private String lastUpdateDate;
     private long authorId;
     private List<Long> tagIds;
+    private List<String> comments;
+
+    public List<String> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<String> comments) {
+        this.comments = comments;
+    }
 
     public List<Long> getTagIds() {
         return tagIds;

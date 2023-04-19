@@ -22,7 +22,7 @@ import java.util.Optional;
 public class NewsRepository implements BaseRepository<NewsModel, Long>, ExtraNewsRepository {
 
     public static final String SELECT_ALL_NEWS = "select n from NewsModel n";
-    public static final String DELETE_NEWS_BY_ID = "delete from NewsModel where id = :id";
+    private static final String SELECT_ALL_NEWS_ORDER_BY = "select n from NewsModel n order by ";
     private final TransactionTemplate transactionTemplate;
     EntityManager entityManager;
 
@@ -37,7 +37,16 @@ public class NewsRepository implements BaseRepository<NewsModel, Long>, ExtraNew
     }
 
     @Override
-    public List<NewsModel> readAll() {
+    public List<NewsModel> readAll(Integer page, Integer size, String sortBy) {
+        List<String> sorting = List.of(sortBy.split(","));
+        String request = SELECT_ALL_NEWS_ORDER_BY + sorting.get(0) + " " + sorting.get(1);
+        return entityManager.createQuery(request, NewsModel.class)
+                .setFirstResult((page - 1) * size)
+                .setMaxResults(page * size)
+                .getResultList();
+    }
+
+    private List<NewsModel> readAll() {
         return entityManager.createQuery(SELECT_ALL_NEWS, NewsModel.class).getResultList();
     }
 
@@ -63,7 +72,7 @@ public class NewsRepository implements BaseRepository<NewsModel, Long>, ExtraNew
 
     @Override
     public boolean deleteById(Long id) {
-        entityManager.createQuery(DELETE_NEWS_BY_ID).setParameter("id", id).executeUpdate();
+        entityManager.remove(readById(id).orElseThrow());
         return !existById(id);
     }
 

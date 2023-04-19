@@ -1,6 +1,7 @@
 package com.mjc.school.service.dto;
 
 import com.mjc.school.repository.model.AuthorModel;
+import com.mjc.school.repository.model.CommentModel;
 import com.mjc.school.repository.model.NewsModel;
 import com.mjc.school.repository.model.TagModel;
 import org.mapstruct.Mapper;
@@ -46,4 +47,14 @@ public interface NewsMapper {
     TagModel createTagDtoToTag(TagCreateDto dto);
 
     TagResponseDto tagToTagResponseDto(TagModel tag);
+
+    @Mapping(target = "news", source = "news")
+    @Mapping(target = "content", source = "dto.content")
+    @Mapping(target = "id", source = "dto.id")
+    @Mapping(target = "createDate", source = "dto.createDate")
+    @Mapping(target = "lastUpdateDate", source = "dto.lastUpdateDate")
+    CommentModel createCommentDtoToComment(CommentCreateDto dto, NewsModel news);
+
+    @Mapping(target = "newsId", source = "news.id")
+    CommentResponseDto commentToCommentResponseDto(CommentModel comment);
 }

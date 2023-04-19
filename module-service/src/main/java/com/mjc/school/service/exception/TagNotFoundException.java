@@ -1,10 +1,9 @@
 package com.mjc.school.service.exception;
 
-public class TagNotFoundException extends CustomException{
+public class TagNotFoundException extends RuntimeException {
 
-    public static final String CODE = "000004";
+    public TagNotFoundException(Long id) {
 
-    public TagNotFoundException(String message) {
-        super(CODE, message);
+        super("Tag with id " + id + " does not exist.");
     }
 }

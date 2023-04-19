@@ -14,8 +14,7 @@ import java.util.Optional;
 public class TagRepository implements BaseRepository<TagModel, Long> {
 
     public static final String SELECT_ALL_TAGS = "select t from TagModel t";
-    public static final String DELETE_TAG_BY_ID = "delete from TagModel where id = :id";
-    public static final String UPDATE_TAG = "update TagModel set name = :name where id= :id";
+    private static final String SELECT_ALL_TAGS_ORDER_BY = "select t from TagModel t order by ";
     private final TransactionTemplate transactionTemplate;
     EntityManager entityManager;
 
@@ -32,8 +31,13 @@ public class TagRepository implements BaseRepository<TagModel, Long> {
     }
 
     @Override
-    public List<TagModel> readAll() {
-        return transactionTemplate.execute(s -> entityManager.createQuery(SELECT_ALL_TAGS, TagModel.class).getResultList());
+    public List<TagModel> readAll(Integer page, Integer size, String sortBy) {
+        List<String> sorting = List.of(sortBy.split(","));
+        String request = SELECT_ALL_TAGS_ORDER_BY + sorting.get(0) + " " + sorting.get(1);
+        return entityManager.createQuery(request, TagModel.class)
+                .setFirstResult((page - 1) * size)
+                .setMaxResults(page * size)
+                .getResultList();
     }
 
     @Override
@@ -49,20 +53,16 @@ public class TagRepository implements BaseRepository<TagModel, Long> {
 
     @Override
     public TagModel update(TagModel entity) {
-        return transactionTemplate.execute(s -> {
-            entityManager.createQuery(UPDATE_TAG)
-                    .setParameter("id", entity.getId())
-                    .setParameter("name", entity.getName())
-                    .executeUpdate();
-            return entity;
-        });
+        TagModel tag = entityManager.find(TagModel.class, entity.getId());
+        tag.setName(entity.getName());
+        entityManager.persist(tag);
+        entityManager.flush();
+        return entity;
     }
 
     @Override
     public boolean deleteById(Long id) {
-        transactionTemplate.executeWithoutResult(s -> entityManager.createQuery(DELETE_TAG_BY_ID)
-                .setParameter("id", id).executeUpdate()
-        );
+        entityManager.remove(readById(id).orElseThrow());
         return !existById(id);
     }
 
