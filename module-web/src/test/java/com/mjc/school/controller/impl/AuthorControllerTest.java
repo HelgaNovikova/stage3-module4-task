@@ -83,6 +83,21 @@ public class AuthorControllerTest {
                 .body("name",equalTo(newName));
     }
 
+    @Test
+    public void patchAuthor() {
+        JsonPath response = createAuthorAndReturnResponse();
+        int authorId = response.get("id");
+        String newName = "name after";
+        JSONObject requestParams = new JSONObject();
+        requestParams.put("name", newName);
+        request.contentType("application/json")
+                .body(requestParams.toString(1))
+                .patch("/" + authorId)
+                .then()
+                .statusCode(200)
+                .body("name", equalTo(newName));
+    }
+
     private JsonPath createAuthorAndReturnResponse(){
         JSONObject requestParams = new JSONObject();
         String name = "Olia tester";
