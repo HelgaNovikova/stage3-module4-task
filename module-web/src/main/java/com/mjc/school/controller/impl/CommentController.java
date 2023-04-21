@@ -59,8 +59,8 @@ public class CommentController implements BaseController<CommentCreateDto, Comme
     @Override
     @DeleteMapping(value = "/{id:\\d+}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean deleteById(@PathVariable Long id) {
-        return this.commentService.deleteById(id);
+    public void deleteById(@PathVariable Long id) {
+        this.commentService.deleteById(id);
     }
 
     @Override

@@ -52,8 +52,8 @@ public class TagController implements BaseController<TagCreateDto, TagResponseDt
     @Override
     @DeleteMapping(value = "/{id:\\d+}")
     @ResponseStatus( HttpStatus.NO_CONTENT)
-    public boolean deleteById(@PathVariable Long id) {
-        return this.tagService.deleteById(id);
+    public void deleteById(@PathVariable Long id) {
+        this.tagService.deleteById(id);
     }
 
     @Override

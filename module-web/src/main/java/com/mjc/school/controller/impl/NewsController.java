@@ -60,8 +60,8 @@ public class NewsController implements BaseController<NewsCreateDto, NewsRespons
     @Override
     @DeleteMapping(value = "/{id:\\d+}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public boolean deleteById(@PathVariable Long id) {
-        return this.newsService.deleteById(id);
+    public void deleteById(@PathVariable Long id) {
+        this.newsService.deleteById(id);
     }
 
     @Override

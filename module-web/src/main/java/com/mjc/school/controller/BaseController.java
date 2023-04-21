@@ -12,7 +12,7 @@ public interface BaseController<T, R, K> {
 
     R update(K id, T updateRequest);
 
-    boolean deleteById(K id);
+    void deleteById(K id);
 
     R patchById(K id,T createRequest);
 }

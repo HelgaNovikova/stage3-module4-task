@@ -56,8 +56,8 @@ public class AuthorController implements BaseController<AuthorCreateDto, AuthorR
     @Override
     @DeleteMapping(value = "/{id:\\d+}")
     @ResponseStatus( HttpStatus.NO_CONTENT)
-    public boolean deleteById(@PathVariable Long id) {
-        return this.authorService.deleteById(id);
+    public void deleteById(@PathVariable Long id) {
+        this.authorService.deleteById(id);
     }
 
     @Override
