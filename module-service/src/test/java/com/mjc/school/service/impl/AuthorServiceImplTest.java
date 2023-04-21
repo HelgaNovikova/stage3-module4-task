@@ -36,12 +36,12 @@ public class AuthorServiceImplTest {
     @Test
     void getAllAuthorsDto() {
         //GIVEN
-        Mockito.when(authorRepository.readAll()).thenReturn(List.of(author));
+        Mockito.when(authorRepository.readAll(1, 10, "id,asc")).thenReturn(List.of(author));
         AuthorResponseDto expected = getExpectedAuthorResponseDto(author.getId(), author.getName());
         //WHEN
-        var response = service.readAll();
+        var response = service.readAll(1, 10, "id,asc");
         //THEN
-        Mockito.verify(authorRepository).readAll();
+        Mockito.verify(authorRepository).readAll(1, 10, "id,asc");
         Assertions.assertEquals(List.of(expected), response);
     }
 
@@ -57,6 +57,7 @@ public class AuthorServiceImplTest {
     void getAuthorByIdDto() {
         //GIVEN
         Mockito.when(authorRepository.readById(1L)).thenReturn(Optional.ofNullable(author));
+        Mockito.when(authorRepository.existById(1L)).thenReturn(true);
         AuthorResponseDto expected = getExpectedAuthorResponseDto(author.getId(), author.getName());
         //WHEN
         var response = service.readById(1L);
@@ -82,9 +83,10 @@ public class AuthorServiceImplTest {
         AuthorModel updatedAuthor = new AuthorModel(1L, "new name", now, now);
         Mockito.when(authorRepository.update(any())).thenReturn(updatedAuthor);
         Mockito.when(authorRepository.readById(anyLong())).thenReturn(Optional.of(author));
+        Mockito.when(authorRepository.existById(1L)).thenReturn(true);
         AuthorResponseDto expected = getExpectedAuthorResponseDto(dto.getId(), dto.getName());
         //WHEN
-        var response = service.update(dto);
+        var response = service.update(1L, dto);
         //THEN
         Mockito.verify(authorRepository).update(any());
         Assertions.assertEquals(expected, response);

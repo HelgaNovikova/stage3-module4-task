@@ -47,13 +47,13 @@ public class NewsServiceImplTest {
     @Test
     void getAllNewsDto() {
         //GIVEN
-        Mockito.when(newsRepository.readAll()).thenReturn(List.of(news));
+        Mockito.when(newsRepository.readAll(1, 10, "id,asc")).thenReturn(List.of(news));
         NewsResponseDto expected = getExpectedNewsResponseDto(news.getContent(),
                 news.getId(), news.getAuthor().getId(), news.getTitle());
         //WHEN
-        var response = service.readAll();
+        var response = service.readAll(1, 10, "id,asc");
         //THEN
-        Mockito.verify(newsRepository).readAll();
+        Mockito.verify(newsRepository).readAll(1, 10, "id,asc");
         Assertions.assertEquals(List.of(expected), response);
     }
 
@@ -104,7 +104,7 @@ public class NewsServiceImplTest {
         NewsResponseDto expected = getExpectedNewsResponseDto(dto.getContent(),
                 dto.getId(), dto.getAuthorId(), dto.getTitle());
         //WHEN
-        var response = service.update(dto);
+        var response = service.update(1L,dto);
         //THEN
         Mockito.verify(newsRepository).update(any());
         Assertions.assertEquals(expected, response);
